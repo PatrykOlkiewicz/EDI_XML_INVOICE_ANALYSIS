@@ -1,0 +1,153 @@
+# Example EDI XML invoice file.
+# All data (tax IDs, company names, addresses, quantities, prices) have been replaced with dummy values
+
+<Document-Invoice>
+  <Invoice-Header>
+    <InvoiceNumber><![CDATA[ FA/1/01/2020/DIREC ]]></InvoiceNumber>
+    <InvoiceDate>2020-01-21</InvoiceDate>
+    <SalesDate>2020-01-17</SalesDate>
+    <InvoiceCurrency>PLN</InvoiceCurrency>
+    <InvoicePaymentDueDate>2020-02-16</InvoicePaymentDueDate>
+    <InvoicePaymentTerms>26</InvoicePaymentTerms>
+    <DocumentFunctionCode>O</DocumentFunctionCode>
+    <Order>
+      <BuyerOrderNumber/>
+      <BuyerOrderDate>2020-01-14</BuyerOrderDate>
+    </Order>
+    <Delivery>
+      <DeliveryLocationNumber/>
+      <DeliveryDate>2020-01-17</DeliveryDate>
+      <DespatchNumber>WZ/1/01/2020/DIREC</DespatchNumber>
+      <DespatchAdviceNumber/>
+    </Delivery>
+  </Invoice-Header>
+  <Invoice-Parties>
+    <Buyer>
+      <ILN/>
+      <TaxID>0000000000</TaxID>
+      <AccountNumber>PL00000000000000000000000000</AccountNumber>
+      <Name><![CDATA[ Dummy Buyer Company ]]></Name>
+      <StreetAndNumber><![CDATA[ ul. Przykładowa 1 ]]></StreetAndNumber>
+      <CityName><![CDATA[ Warszawa ]]></CityName>
+      <PostalCode>00-001</PostalCode>
+      <Country>PL</Country>
+    </Buyer>
+    <Payer>
+      <ILN/>
+      <TaxID>0000000000</TaxID>
+      <AccountNumber>PL00000000000000000000000000</AccountNumber>
+      <Name><![CDATA[ Dummy Buyer Company ]]></Name>
+      <StreetAndNumber><![CDATA[ ul. Przykładowa 1 ]]></StreetAndNumber>
+      <CityName><![CDATA[ Warszawa ]]></CityName>
+      <PostalCode>00-001</PostalCode>
+      <Country>PL</Country>
+    </Payer>
+    <Invoicee>
+      <ILN/>
+      <TaxID>0000000000</TaxID>
+      <AccountNumber>PL00000000000000000000000000</AccountNumber>
+      <Name><![CDATA[ Dummy Buyer Company ]]></Name>
+      <StreetAndNumber><![CDATA[ ul. Przykładowa 1 ]]></StreetAndNumber>
+      <CityName><![CDATA[ Warszawa ]]></CityName>
+      <PostalCode>00-001</PostalCode>
+      <Country>PL</Country>
+    </Invoicee>
+    <Seller>
+      <ILN>0000000000000</ILN>
+      <TaxID>1111111111</TaxID>
+      <AccountNumber>PL11111111111111111111111111</AccountNumber>
+      <CodeByBuyer/>
+      <Name><![CDATA[ Dummy Seller Company ]]></Name>
+      <StreetAndNumber><![CDATA[ ul. Sprzedażowa 2 ]]></StreetAndNumber>
+      <CityName><![CDATA[ Poznań ]]></CityName>
+      <PostalCode>60-001</PostalCode>
+      <Country>PL</Country>
+      <UtilizationRegisterNumber/>
+      <CourtAndCapitalInformation/>
+    </Seller>
+    <Payee>
+      <ILN>0000000000000</ILN>
+      <TaxID>1111111111</TaxID>
+      <AccountNumber>PL11111111111111111111111111</AccountNumber>
+      <Name><![CDATA[ Dummy Seller Company ]]></Name>
+      <StreetAndNumber><![CDATA[ ul. Sprzedażowa 2 ]]></StreetAndNumber>
+      <CityName><![CDATA[ Poznań ]]></CityName>
+      <PostalCode>60-001</PostalCode>
+      <Country>PL</Country>
+    </Payee>
+    <SellerHeadquarters>
+      <ILN>0000000000000</ILN>
+      <Name><![CDATA[ Dummy Seller Company ]]></Name>
+      <StreetAndNumber><![CDATA[ ul. Sprzedażowa 2 ]]></StreetAndNumber>
+      <CityName><![CDATA[ Poznań ]]></CityName>
+      <PostalCode>60-001</PostalCode>
+      <Country>PL</Country>
+    </SellerHeadquarters>
+  </Invoice-Parties>
+  <Invoice-Lines>
+    <Line>
+      <Line-Item>
+        <LineNumber>1</LineNumber>
+        <EAN/>
+        <BuyerItemCode/>
+        <SupplierItemCode>ITEM-001</SupplierItemCode>
+        <ItemDescription><![CDATA[ Dummy Product 1 ]]></ItemDescription>
+        <ItemType>CU</ItemType>
+        <InvoiceQuantity>10.000</InvoiceQuantity>
+        <UnitOfMeasure>KGM</UnitOfMeasure>
+        <InvoiceUnitPacksize>1.000</InvoiceUnitPacksize>
+        <PackItemUnitOfMeasure>KGM</PackItemUnitOfMeasure>
+        <InvoiceUnitNetPrice>100.00</InvoiceUnitNetPrice>
+        <TaxRate>23.00</TaxRate>
+        <TaxCategoryCode>S</TaxCategoryCode>
+        <TaxReference>
+          <ReferenceType>PKWiU</ReferenceType>
+          <ReferenceNumber/>
+        </TaxReference>
+        <TaxAmount>230.00</TaxAmount>
+        <NetAmount>1000.00</NetAmount>
+      </Line-Item>
+    </Line>
+    <Line>
+      <Line-Item>
+        <LineNumber>2</LineNumber>
+        <EAN/>
+        <BuyerItemCode/>
+        <SupplierItemCode>ITEM-002</SupplierItemCode>
+        <ItemDescription><![CDATA[ Dummy Product 2 ]]></ItemDescription>
+        <ItemType>CU</ItemType>
+        <InvoiceQuantity>5.000</InvoiceQuantity>
+        <UnitOfMeasure>KGM</UnitOfMeasure>
+        <InvoiceUnitPacksize>1.000</InvoiceUnitPacksize>
+        <PackItemUnitOfMeasure>KGM</PackItemUnitOfMeasure>
+        <InvoiceUnitNetPrice>50.00</InvoiceUnitNetPrice>
+        <TaxRate>23.00</TaxRate>
+        <TaxCategoryCode>S</TaxCategoryCode>
+        <TaxReference>
+          <ReferenceType>PKWiU</ReferenceType>
+          <ReferenceNumber/>
+        </TaxReference>
+        <TaxAmount>57.50</TaxAmount>
+        <NetAmount>250.00</NetAmount>
+      </Line-Item>
+    </Line>
+  </Invoice-Lines>
+  <Invoice-Summary>
+    <TotalLines>2</TotalLines>
+    <TotalNetAmount>1250.00</TotalNetAmount>
+    <TotalTaxableBasis>1250.00</TotalTaxableBasis>
+    <TotalTaxAmount>287.50</TotalTaxAmount>
+    <TotalGrossAmount>1537.50</TotalGrossAmount>
+    <GrossAmountInWords><![CDATA[ One thousand five hundred thirty-seven 50/100 PLN ]]></GrossAmountInWords>
+    <Tax-Summary>
+      <Tax-Summary-Line>
+        <TaxRate>23.00</TaxRate>
+        <TaxCategoryCode>S</TaxCategoryCode>
+        <TaxAmount>287.50</TaxAmount>
+        <TaxableBasis>1250.00</TaxableBasis>
+        <TaxableAmount>1250.00</TaxableAmount>
+        <GrossAmount>1537.50</GrossAmount>
+      </Tax-Summary-Line>
+    </Tax-Summary>
+  </Invoice-Summary>
+</Document-Invoice>
