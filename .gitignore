@@ -1,0 +1,10 @@
+# Python cache files
+__pycache__/
+*.pyc
+
+# Local temp / data folders
+C:/Temp/
+*.csv
+
+# IDE / editor settings
+.vscode/
