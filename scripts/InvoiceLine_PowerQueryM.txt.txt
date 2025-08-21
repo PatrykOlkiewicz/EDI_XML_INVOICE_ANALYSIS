@@ -1,0 +1,42 @@
+// Steps performed:
+// 1. Load all CSV files from folder (D:\Dane Comarch CSV)
+// 2. Exclude hidden/system files
+// 3. Apply custom transform function to each CSV file (parse columns, clean data)
+// 4. Standardize column names
+// 5. Convert column types to correct data types (text, number, date)
+// 6. Replace dots with commas in numeric values for localization/Power Query consistency
+// 7. Calculate Net_Calc = InvoiceQuantity * InvoiceUnitNetPrice
+// 8. Check unit price correctness against NetAmount and flag errors ("OK" or "Błąd")
+// 9. Correct InvoiceUnitNetPrice using NetAmount / InvoiceQuantity to fix rounding issues from EDI export
+// 10. Remove intermediate/calculation columns no longer needed
+// 11. Sort rows by InvoiceNumber and InvoiceDate
+// 12. Select only columns needed for SQL import
+// 13. Merge with Invoice table to get InvoiceId
+// 14. Remove original InvoiceNumber column and reorder final columns
+
+
+let
+    Source = Folder.Files("D:\Dane Comarch CSV"),
+    #"Filtered Hidden Files1" = Table.SelectRows(Source, each [Attributes]?[Hidden]? <> true),
+    #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File", each #"Transform File"([Content])),
+    #"Renamed Columns1" = Table.RenameColumns(#"Invoke Custom Function1", {"Name", "Source.Name"}),
+    #"Removed Other Columns1" = Table.SelectColumns(#"Renamed Columns1", {"Source.Name", "Transform File"}),
+    #"Expanded Table Column1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Transform File", Table.ColumnNames(#"Transform File"(#"Sample File"))),
+    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Table Column1",{{"Source.Name", type text}, {"InvoiceNumber", type text}, {"InvoiceDate", type date}, {"SalesDate", type date}, {"InvoiceCurrency", type text}, {"InvoicePaymentDueDate", type date}, {"InvoicePaymentTerms", Int64.Type}, {"DocumentFunctionCode", type text}, {"Buyer_TaxID", type text}, {"Buyer_Name", type text}, {"Buyer_StreetAndNumber", type text}, {"Buyer_CityName", type text}, {"Buyer_PostalCode", type text}, {"Buyer_Country", type text}, {"Seller_TaxID", Int64.Type}, {"Seller_Name", type text}, {"Seller_StreetAndNumber", type text}, {"Seller_CityName", type text}, {"Seller_PostalCode", type text}, {"Seller_Country", type text}, {"LineNumber", Int64.Type}, {"SupplierItemCode", type text}, {"ItemDescription", type text}, {"ItemType", type text}, {"InvoiceQuantity", type text}, {"UnitOfMeasure", type text}, {"InvoiceUnitNetPrice", type text}, {"TaxRate", type text}, {"TaxAmount", type text}, {"NetAmount", type text}}),
+    #"Replaced Value" = Table.ReplaceValue(#"Changed Type",".",",",Replacer.ReplaceText,{"InvoiceQuantity", "InvoiceUnitNetPrice", "TaxRate", "TaxAmount", "NetAmount"}),
+    #"Changed Type1" = Table.TransformColumnTypes(#"Replaced Value",{{"Source.Name", type text}, {"InvoiceNumber", type text}, {"InvoiceDate", type date}, {"SalesDate", type date}, {"InvoiceCurrency", type text}, {"InvoicePaymentDueDate", type date}, {"InvoicePaymentTerms", Int64.Type}, {"DocumentFunctionCode", type text}, {"Buyer_TaxID", type text}, {"Buyer_Name", type text}, {"Buyer_StreetAndNumber", type text}, {"Buyer_CityName", type text}, {"Buyer_PostalCode", type text}, {"Buyer_Country", type text}, {"Seller_TaxID", Int64.Type}, {"Seller_Name", type text}, {"Seller_StreetAndNumber", type text}, {"Seller_CityName", type text}, {"Seller_PostalCode", type text}, {"Seller_Country", type text}, {"LineNumber", Int64.Type}, {"SupplierItemCode", type text}, {"ItemDescription", type text}, {"ItemType", type text}, {"InvoiceQuantity", Int64.Type}, {"UnitOfMeasure", type text}, {"InvoiceUnitNetPrice", type number}, {"TaxRate", Int64.Type}, {"TaxAmount", type number}, {"NetAmount", type number}}),
+    #"Added Net_Calc" = Table.AddColumn(#"Changed Type1", "Net_Calc", each [InvoiceQuantity] * [InvoiceUnitNetPrice]),
+    #"Added CheckUnitPrice" = Table.AddColumn(#"Added Net_Calc", "Custom", each if Number.Abs([Net_Calc]) = [NetAmount]
+then "OK"
+else "Błąd"),
+    #"Removed Source.Name" = Table.RemoveColumns(#"Added CheckUnitPrice",{"Source.Name"}),
+    #"Added InvoiceUnitNetPriceNEW" = Table.AddColumn(#"Removed Source.Name", "InvoiceUnitNetPriceNEW", each [NetAmount]/[InvoiceQuantity]),
+    #"Removed CheckUnitPrice" = Table.RemoveColumns(#"Added InvoiceUnitNetPriceNEW",{"Custom", "Net_Calc", "NetAmount", "TaxAmount", "InvoiceUnitNetPrice"}),
+    #"Sorted Rows" = Table.Sort(#"Removed CheckUnitPrice",{{"InvoiceNumber", Order.Ascending}, {"InvoiceDate", Order.Ascending}}),
+    #"Removed Other Columns" = Table.SelectColumns(#"Sorted Rows",{"InvoiceNumber", "LineNumber", "SupplierItemCode", "ItemDescription", "ItemType", "InvoiceQuantity", "UnitOfMeasure", "TaxRate", "InvoiceUnitNetPriceNEW"}),
+    #"Merged Queries" = Table.NestedJoin(#"Removed Other Columns", {"InvoiceNumber"}, Invoice, {"InvoiceNumber"}, "Invoice", JoinKind.LeftOuter),
+    #"Expanded Invoice" = Table.ExpandTableColumn(#"Merged Queries", "Invoice", {"InvoiceId"}, {"Invoice.InvoiceId"}),
+    #"Removed Columns" = Table.RemoveColumns(#"Expanded Invoice",{"InvoiceNumber"}),
+    #"Reordered Columns" = Table.ReorderColumns(#"Removed Columns",{"Invoice.InvoiceId", "LineNumber", "SupplierItemCode", "ItemDescription", "ItemType", "InvoiceQuantity", "UnitOfMeasure", "TaxRate", "InvoiceUnitNetPriceNEW"})
+in
+    #"Reordered Columns" 
