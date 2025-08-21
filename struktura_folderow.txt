@@ -1,0 +1,26 @@
+Folder PATH listing for volume OS
+Volume serial number is 9EEF-E0EC
+C:.
+-   .gitignore
+-   struktura_folderow.txt
+-   
++¦¦¦data
+-   +¦¦¦final
+-   +¦¦¦processed
+-   -       Example_CSV_Invoice.txt
+-   -       
+-   L¦¦¦raw
+-           example_invoice_dummy.xml.txt
+-           
++¦¦¦output
+-   +¦¦¦figures
+-   L¦¦¦reports
++¦¦¦scripts
+-   -   converter_xml_to_csv.py.py
+-   -   InvoiceLine_PowerQueryM.txt.txt
+-   -   
+-   L¦¦¦CreateDatabaseSQL
+-           SQLQuery2.sql
+-           
+L¦¦¦sql
+    L¦¦¦sales_queries.sql
