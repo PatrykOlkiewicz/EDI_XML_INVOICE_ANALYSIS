@@ -1,0 +1,8 @@
+ALTER TABLE Invoice
+ALTER COLUMN InvoiceDate DATE;
+
+ALTER TABLE Invoice
+ALTER COLUMN SalesDate DATE;
+
+ALTER TABLE Invoice
+ALTER COLUMN InvoicePaymentDueDate DATE;

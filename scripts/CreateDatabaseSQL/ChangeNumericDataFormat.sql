@@ -1,0 +1,8 @@
+ALTER TABLE InvoiceLine
+ALTER COLUMN InvoiceQuantity DECIMAL(18,2);
+
+ALTER TABLE InvoiceLine
+ALTER COLUMN InvoiceUnitNetPriceNEW DECIMAL(18,2);
+
+ALTER TABLE InvoiceLine
+ALTER COLUMN TaxRate DECIMAL(5,2);
